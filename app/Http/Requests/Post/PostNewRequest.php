@@ -7,7 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Validation\Validator;
 
-class PostRequest extends FormRequest
+class PostNewRequest extends FormRequest
 {
     use ApiValidation;
     /**
@@ -28,7 +28,7 @@ class PostRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|string|min:100|max:50',
+            'title' => 'required|string|max:255',
             'image' => 'required',
             'body' => 'required',
             'user_id' => 'required|exists:users,id',
