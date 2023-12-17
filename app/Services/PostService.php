@@ -16,14 +16,9 @@ class PostService implements PostRepository
         return Post::paginate(10);
     }
 
-    public function cretePost(Request $request)
+    public function cretePost(array $postCreator)
     {
-        return Post::create([
-            'title' => $request->title,
-            'image' => $request->image,
-            'body' => $request->body,
-            'user_id' => $request->user_id,
-        ]);
+        return Post::create($postCreator);
     }
 
     public function showByIdPost(Post $post): Post
@@ -31,20 +26,13 @@ class PostService implements PostRepository
         return $post;
     }
 
-    public function updatePost(Request $request, Post $post)
+    public function updatePost(Post $post, array $postUpdate): bool
     {
-        $post->update([
-            'title' => $request->title,
-            'image' => $request->image,
-            'body' => $request->body,
-            'user_id' => $request->user_id,
-        ]);
-        return $post;
+        return $post->update($postUpdate);
     }
 
     public function deletePost(Post $post): ?bool
     {
         return $post->delete();
-//        return $this->successResponse(201, $post, 'Your Post deleted successfully');
     }
 }

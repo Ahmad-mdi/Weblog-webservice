@@ -5,8 +5,8 @@ use Illuminate\Http\Request;
 
 interface PostRepository {
     public function getAllPost();
-    public function cretePost(Request $request);
+    public function cretePost(array $postCreator);
     public function showByIdPost(Post $post);
-    public function updatePost(Request $request,Post $post);
+    public function updatePost(Post $post,array $postUpdate);
     public function deletePost(Post $post);
 }

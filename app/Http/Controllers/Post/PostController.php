@@ -2,42 +2,55 @@
 
 namespace App\Http\Controllers\Post;
 
-use App\Http\Controllers\ApiResponseController;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Post\PostNewRequest;
 use App\Http\Requests\Post\PostUpdateRequest;
 use App\Models\Post;
+use App\Repositories\PostRepository;
 use App\Services\PostService;
 
 class PostController extends Controller
 {
-    public function index(PostService $service): \Illuminate\Http\JsonResponse
+    private PostService $postService;
+
+    public function __construct(PostService $postService)
     {
-        $data = $service->getAllPost();
-        return $this->successResponse(201, $data, 'getAllDataOk');
+        $this->postService = $postService;
     }
 
-    public function store(PostNewRequest $request, PostService $service): \Illuminate\Http\JsonResponse
+    public function index(): \Illuminate\Http\JsonResponse
     {
-        $data = $service->cretePost($request);
+        $data = $this->postService->getAllPost();
+        return $this->successResponse(200, $data, 'getOk');
+    }
+
+    public function store(PostNewRequest $request): \Illuminate\Http\JsonResponse
+    {
+        $orderDetails = $request->only([
+            'title', 'image', 'body', 'user_id',
+        ]);
+        $data = $this->postService->cretePost($orderDetails);
         return $this->successResponse(200, $data, 'post created successfully');
     }
 
-    public function show(Post $post, PostService $service): \Illuminate\Http\JsonResponse
+    public function show(Post $post): \Illuminate\Http\JsonResponse
     {
-        $data = $service->showByIdPost($post);
+        $data = $this->postService->showByIdPost($post);
         return $this->successResponse(201, $data, 'getYourPost');
     }
 
-    public function update(PostUpdateRequest $request, Post $post, PostService $service): \Illuminate\Http\JsonResponse
+    public function update(PostUpdateRequest $request, Post $post): \Illuminate\Http\JsonResponse
     {
-        $data = $service->updatePost($request, $post);
+        $orderDetails = $request->only([
+            'title', 'image', 'body', 'user_id'
+        ]);
+        $this->postService->updatePost($post, $orderDetails);
         return $this->successResponse(200, $post, 'Post updated successfully');
     }
 
-    public function destroy(Post $post, PostService $service): \Illuminate\Http\JsonResponse
+    public function destroy(Post $post): \Illuminate\Http\JsonResponse
     {
-         $service->deletePost($post);
-        return $this->successResponse(200,$post,'Your post deleted successfully');//for boolean call post binding
+        $this->postService->deletePost($post);
+        return $this->successResponse(200, $post, 'Your post deleted successfully');//for boolean call post binding
     }
 }
