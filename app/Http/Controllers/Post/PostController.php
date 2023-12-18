@@ -7,6 +7,7 @@ use App\Http\Requests\Post\PostNewRequest;
 use App\Http\Requests\Post\PostUpdateRequest;
 use App\Models\Post;
 use App\Services\PostService;
+use Carbon\Carbon;
 
 class PostController extends Controller
 {
@@ -23,12 +24,9 @@ class PostController extends Controller
         return $this->successResponse(200, $data, 'getOk');
     }
 
-    public function store(PostNewRequest $request): \Illuminate\Http\JsonResponse
+    public function store(PostNewRequest $request)
     {
-        $orderDetails = $request->only([
-            'title', 'image', 'body', 'user_id',
-        ]);
-        $data = $this->postService->cretePost($orderDetails);
+        $data = $this->postService->cretePost($request);
         return $this->successResponse(200, $data, 'post created successfully');
     }
 
@@ -40,11 +38,9 @@ class PostController extends Controller
 
     public function update(PostUpdateRequest $request, Post $post): \Illuminate\Http\JsonResponse
     {
-        $orderDetails = $request->only([
-            'title', 'image', 'body', 'user_id'
-        ]);
-        $this->postService->updatePost($post, $orderDetails);
-        return $this->successResponse(200, $post, 'Post updated successfully');
+        $this->postService->updatePost($post,$request);
+        return $this->successResponse(200,$post,'post updated successfully');
+
     }
 
     public function destroy(Post $post): \Illuminate\Http\JsonResponse
