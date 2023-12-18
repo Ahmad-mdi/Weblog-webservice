@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Http\Resources\PostResource;
 use App\Models\Post;
 use App\Repositories\PostRepository;
 use App\Traits\ApiResponse;
@@ -19,8 +20,8 @@ class PostService implements PostRepository
 
     public function cretePost(Request $request)
     {
-        $fileName = Carbon::now()->microsecond.'.'.$request->image->extension();
-        $request->image->storeAs('image-posts',$fileName,'public');
+        $fileName = Carbon::now()->microsecond . '.' . $request->image->extension();
+        $request->image->storeAs('image-posts', $fileName, 'public');
         return Post::create([
             'title' => $request->title,
             'image' => $fileName,
@@ -34,11 +35,11 @@ class PostService implements PostRepository
         return $post;
     }
 
-    public function updatePost(Post $post,Request $request): bool
+    public function updatePost(Post $post, Request $request): bool
     {
         if ($request->has('image')) {
             $fileName = Carbon::now()->microsecond . '.' . $request->image->extension();
-            $request->image->storeAs('images/posts',$fileName,'public');
+            $request->image->storeAs('images/posts', $fileName, 'public');
         }
         return $post->update([
             'title' => $request->title,
