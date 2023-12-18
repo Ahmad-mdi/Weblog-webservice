@@ -27,7 +27,7 @@ class PostUpdateRequest extends FormRequest
     {
         return [
             'title' => 'required|string|max:255',
-            'image' => 'required',
+            'image' => 'image|mimes:jpg,svg,png,jpeg',
             'body' => 'required',
             'user_id' => 'required|exists:users,id',
         ];
