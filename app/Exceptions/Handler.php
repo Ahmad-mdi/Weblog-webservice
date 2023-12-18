@@ -51,11 +51,11 @@ class Handler extends ExceptionHandler
         });
     }
 
-    public function render($request,Throwable $e)
+    /*public function render($request,Throwable $e)
     {
         if ($e instanceof ModelNotFoundException) {
             return $this->errorResponse(404,$e->getMessage(),'The url not found!');
         }
         return $this->errorResponse(500,$e->getMessage(),'server not found!');
-    }
+    }*/
 }
