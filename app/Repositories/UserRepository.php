@@ -7,5 +7,6 @@ use Illuminate\Http\Request;
 interface UserRepository
 {
     public function getAllUsers();
-    public function signup(array $userSignup);
+    public function signup(Request $request);
+    public function login(Request $request);
 }

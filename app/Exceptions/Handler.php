@@ -5,6 +5,7 @@ namespace App\Exceptions;
 use App\Traits\ApiResponse;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -51,11 +52,14 @@ class Handler extends ExceptionHandler
         });
     }
 
-    /*public function render($request,Throwable $e)
+    public function render($request,Throwable $e): \Illuminate\Http\Response|\Illuminate\Http\JsonResponse|\Symfony\Component\HttpFoundation\Response
     {
         if ($e instanceof ModelNotFoundException) {
             return $this->errorResponse(404,$e->getMessage(),'The url not found!');
         }
-        return $this->errorResponse(500,$e->getMessage(),'server not found!');
-    }*/
+        if ($e instanceof RouteNotFoundException) {
+            return $this->errorResponse(403,$e->getMessage(),'authentication = false');
+        }
+        return $this->errorResponse(500,$e->getMessage(),'Server not found!');
+    }
 }

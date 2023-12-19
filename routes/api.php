@@ -6,12 +6,13 @@ use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
 
 
-Route::get('/post',[PostController::class,'index']);
-Route::post('/post',[PostController::class,'store']);
+Route::get('/post',[PostController::class,'index'])->middleware('auth:api');
+Route::post('/post',[PostController::class,'store'])->middleware('auth:api');
 Route::get('/post/{post}',[PostController::class,'show']);
 Route::match(['post'],'/post/{post}',[PostController::class,'update']);
 Route::delete('/post/{post}',[PostController::class,'destroy']);
 //Route::resource('post',PostController::class);
 Route::get('/user',[UserController::class,'index']);
 
-Route::post('/signup',[AuthController::class,'signup']);
+Route::post('/signup',[AuthController::class,'signupUser']);
+Route::post('/login',[AuthController::class,'loginUser'])->middleware('guest:api');
