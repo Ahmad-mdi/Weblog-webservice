@@ -22,20 +22,20 @@ class UserService implements UserRepository
             'email' => $request->email,
             'password' => bcrypt($request->password),
         ]);
-        $token = $user->createToken('ahmad')->accessToken;
+        $token = $user->createToken('myApplication')->plainTextToken; //by sanctum
         return $this->successResponse(200,[
             'user' => $user,
             'token' => $token,
         ],'user ok');
     }
 
-    public function login(Request $request)
+    public function login(Request $request): \Illuminate\Http\JsonResponse
     {
         $user = User::query()->where('email',$request->email)->firstOrFail();
         if (!Hash::check($request->password,$user->password)) {
             return $this->errorResponse(422,null,'password is incorrect');
         }
-        $token = $user->createToken('ahmad')->accessToken;
+        $token = $user->createToken('ahmad')->plainTextToken;
         return $this->successResponse(200,[
             'user' => $user,
             'token' => $token,

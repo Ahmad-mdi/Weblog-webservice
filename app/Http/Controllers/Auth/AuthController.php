@@ -25,15 +25,15 @@ class AuthController extends Controller
         return $this->userService->signup($request);
     }
 
-
     public function loginUser(LoginRequest $request): \Illuminate\Http\JsonResponse
     {
         return $this->userService->login($request);
     }
 
 
-    public function destroy(user $user)
+    public function logoutUser(): \Illuminate\Http\JsonResponse
     {
-        //
+        auth()->user()->tokens()->delete();
+        return $this->successResponse(200,'logout');
     }
 }
